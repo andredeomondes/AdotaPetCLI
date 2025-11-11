@@ -13,11 +13,11 @@ public class FileReaderService {
     public List<String> questionsList = new ArrayList<>();
 
     public List<String> readAllQuestionsFile(String filePath) {
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String question;
             while ((question = br.readLine()) != null) {
                 LoadingAnimation.smoothSpinner(500);
+                System.out.println(Style.msgOk("Question read: " + question));
                 questionsList.add(question);
             }
             LoadingAnimation.smoothSpinner(500);

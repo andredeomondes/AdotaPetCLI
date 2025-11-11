@@ -55,9 +55,9 @@ public class Style {
     /**
      * Mensagem de erro
      */
-    public static String msgError(String mensagem) {
-        return BG_RED + FG_WHITE + " ❌ ERROR: " + RESET +
-                FG_RED + mensagem + RESET + " \n";
+    public static String msgError(String msg) {
+        return (BG_RED + FG_WHITE + " ERROR: " + RESET +
+                FG_RED + msg + RESET + " ");
     }
 
     /**
