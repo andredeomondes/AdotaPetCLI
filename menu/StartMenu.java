@@ -6,6 +6,6 @@ import utils.Style;
 public class StartMenu {
     public void display() {
         LoadingAnimation.smoothSpinner(1000);
-        System.out.println(Style.msgBoasVindas("AdotaPetCLI"));
+        System.out.println(Style.msgWelcome("AdotaPetCLI"));
     }
 }

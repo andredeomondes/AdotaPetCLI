@@ -1,11 +1,18 @@
+import fileProcess.FileReaderService;
 import menu.HomeMenu;
 import menu.StartMenu;
 import utils.LoadingAnimation;
 import utils.Style;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class StartAdotaPetCLI {
     public static void main(String[] args) {
 
+        // Define file paths
+        final String formsPath = "forms.txt";
+        final String directoryPath = "registeredPets";
 
         // Welcome message with loading animations
         StartMenu startMenu = new StartMenu();
@@ -17,9 +24,12 @@ public class StartAdotaPetCLI {
         HomeMenu homeMenu = new HomeMenu();
         homeMenu.display();
 
+        // Read questions from file
+        FileReaderService fileReaderService = new FileReaderService();
+        fileReaderService.readAllQuestionsFile(formsPath);
 
 
-
+        fileReaderService.showIndexQuestion(fileReaderService.questionsList, 0);
 
         // System.out.println("Loading dots:");
         // LoadingAnimation.dots(2500);

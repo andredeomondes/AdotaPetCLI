@@ -1,19 +1,5 @@
 package utils;
 
-/**
- * Classe Style
- *
- * Biblioteca para estilizar e padronizar mensagens no terminal (CLI).
- *
- * Fornece:
- *  - Cores e estilos ANSI
- *  - Mensagens padronizadas (boas-vindas, sucesso, erro, informação)
- *
- * Uso:
- *   System.out.println(Style.msgSucesso("Pet cadastrado com sucesso!"));
- *   System.out.println(Style.msgErro("Falha ao salvar o arquivo."));
- *   System.out.println(Style.msgBoasVindas("AdotaPetCLI"));
- */
 public class Style {
 
     // ==============================================================================================================
@@ -48,58 +34,59 @@ public class Style {
     // Mensagens padronizadas
     // ==============================================================================================================
 
-    /**
-     * Mensagem de boas-vindas (banner principal)
-     */
-    public static String msgBoasVindas(String sistemaNome) {
-        String titulo = "🐾 " + sistemaNome + " 🐾";
+    public static String msgWelcome(String systemName) {
+        String titulo = "🐾 " + systemName + " 🐾";
         String barra = "==============================================================";
         return "\n" +
                 BG_BLUE + FG_WHITE + BOLD +
                 barra + "\n" +
-                centralizar(titulo, barra.length()) + "\n" +
+                center(titulo, barra.length()) + "\n" +
                 barra + "\n" + RESET ;
     }
 
     /**
      * Mensagem de sucesso
      */
-    public static String msgSucesso(String mensagem) {
-        return BG_GREEN + FG_WHITE + " ✅ SUCESSO: " + RESET +
-                FG_GREEN + mensagem + RESET;
+    public static String msgOk(String mensagem) {
+        return BG_GREEN + FG_WHITE + " ✅ SUCCESS: " + RESET + " " +
+                FG_GREEN + mensagem + RESET  + " \n";
     }
 
     /**
      * Mensagem de erro
      */
-    public static String msgErro(String mensagem) {
-        return BG_RED + FG_WHITE + " ❌ ERRO: " + RESET +
-                FG_RED + mensagem + RESET;
+    public static String msgError(String mensagem) {
+        return BG_RED + FG_WHITE + " ❌ ERROR: " + RESET +
+                FG_RED + mensagem + RESET + " \n";
     }
 
     /**
      * Mensagem de informação
      */
-    public static String msgInfo(String mensagem) {
+    public static String msgInfo(String msg) {
         return BG_BLUE + FG_WHITE + " ℹ INFO: " + RESET + " " +
-                FG_CYAN + mensagem + RESET;
+                FG_CYAN + msg + RESET + " \n";
     }
+
+    public static String msgQuestion(String msg) {
+        return BG_BLUE + FG_WHITE + " [?] QUESTION:" + RESET + " " +
+                FG_CYAN + msg + RESET + " "; }
 
     /**
      * Mensagem de aviso
      */
-    public static String msgAviso(String mensagem) {
-        return BG_BLACK + FG_YELLOW + " ⚠ AVISO: " + RESET +
-                FG_YELLOW + mensagem + RESET;
+    public static String msgAdvice(String msg) {
+        return BG_BLACK + FG_YELLOW + " ⚠ ADVICE: " + RESET +
+                FG_YELLOW + msg + RESET + " \n";
     }
 
     // ==============================================================================================================
     // Função auxiliar
     // ==============================================================================================================
-    private static String centralizar(String texto, int largura) {
-        int espacos = (largura - texto.length()) / 2;
-        if (espacos <= 0) return texto;
-        return " ".repeat(espacos) + texto;
+    private static String center(String text, int weight) {
+        int spaces = (weight - text.length()) / 2;
+        if (spaces <= 0) return text;
+        return " ".repeat(spaces) + text;
     }
 
 }
