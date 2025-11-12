@@ -65,7 +65,7 @@ public class Style {
      */
     public static String msgInfo(String msg) {
         return BG_BLUE + FG_WHITE + " ℹ INFO: " + RESET + " " +
-                FG_CYAN + msg + RESET + " \n";
+                FG_CYAN + msg + RESET + " ";
     }
 
     public static String msgQuestion(String msg) {

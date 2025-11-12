@@ -17,7 +17,6 @@ public class FileReaderService {
             String question;
             while ((question = br.readLine()) != null) {
                 LoadingAnimation.smoothSpinner(500);
-                System.out.println(Style.msgOk("Question read: " + question));
                 questionsList.add(question);
             }
             LoadingAnimation.smoothSpinner(500);
