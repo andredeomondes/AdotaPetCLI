@@ -38,7 +38,7 @@ public class Style {
         String titulo = "🐾 " + systemName + " 🐾";
         String barra = "==============================================================";
         return "\n" +
-                BG_BLUE + FG_WHITE + BOLD +
+                BG_BLUE + FG_BLACK + BOLD +
                 barra + "\n" +
                 center(titulo, barra.length()) + "\n" +
                 barra + "\n" + RESET ;
@@ -48,7 +48,7 @@ public class Style {
      * Mensagem de sucesso
      */
     public static String msgOk(String mensagem) {
-        return BG_GREEN + FG_WHITE + " ✅ SUCCESS: " + RESET + " " +
+        return BG_GREEN + FG_BLACK + " ✅ SUCCESS: " + RESET + " " +
                 FG_GREEN + mensagem + RESET  + " \n";
     }
 
@@ -56,7 +56,7 @@ public class Style {
      * Mensagem de erro
      */
     public static String msgError(String msg) {
-        return (BG_RED + FG_WHITE + " ERROR: " + RESET +
+        return (BG_RED + FG_BLACK + " ERROR: " + RESET +
                 FG_RED + msg + RESET + " ");
     }
 
@@ -64,13 +64,13 @@ public class Style {
      * Mensagem de informação
      */
     public static String msgInfo(String msg) {
-        return BG_BLUE + FG_WHITE + " ℹ INFO: " + RESET + " " +
+        return BG_BLUE + FG_BLACK + " ℹ INFO: " + RESET + " " +
                 FG_CYAN + msg + RESET + " ";
     }
 
     public static String msgQuestion(String msg) {
-        return BG_BLUE + FG_WHITE + " [?] QUESTION:" + RESET + " " +
-                FG_CYAN + msg + RESET + " "; }
+        return BG_BLUE + FG_BLACK+ " [?] QUESTION:" + RESET + " " +
+                FG_CYAN + msg + RESET + " \n"; }
 
     /**
      * Mensagem de aviso

@@ -7,6 +7,9 @@ public class PetAddress {
     private Integer number;
     private String city;
 
+    public PetAddress() {
+    }
+
     public PetAddress(String street, Integer number, String city) {
         this.street = street;
         this.number = number;
