@@ -6,8 +6,13 @@ import pet.enums.PetType;
 import utils.Style;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.List; // Necessário para acessar fileReaderService.questionsList
+import java.util.List;
+import java.util.stream.Stream;
 
 public class PetController {
 
@@ -54,6 +59,7 @@ public class PetController {
                                 name = NA;
                                 break;
                             } else if (fields.length < 2) {
+                                // MANTIDO: Exige nome e sobrenome
                                 System.out.println(Style.msgError(" Type NAME AND LASTNAME (ex.: Michael Jackson)"));
                             } else if (!response.matches("^[A-Za-z]+(\\s[A-Za-z]+)*$")) {
                                 System.out.println(Style.msgError(" Use only letters (a–z, A–Z) and spaces."));
@@ -71,20 +77,19 @@ public class PetController {
                             System.out.print(Style.msgInfo(" // Type here [1-DOG / 2-CAT] >>> "));
                             response = sc.nextLine().trim();
 
-                            if (!response.matches("[0-9]+")) {
-                                System.out.println(Style.msgError("Invalid digit [1 or 2]"));
-                                continue;
-                            }
+                            try {
+                                int type = Integer.parseInt(response);
 
-                            int type = Integer.parseInt(response);
-
-                            if (type == 1) {
-                                petType = PetType.DOG;
-                                break;
-                            } else if (type == 2) {
-                                petType = PetType.CAT;
-                                break;
-                            } else {
+                                if (type == 1) {
+                                    petType = PetType.DOG;
+                                    break;
+                                } else if (type == 2) {
+                                    petType = PetType.CAT;
+                                    break;
+                                } else {
+                                    System.out.println(Style.msgError("Invalid digit [1 or 2]"));
+                                }
+                            } catch (NumberFormatException e) {
                                 System.out.println(Style.msgError("Invalid digit [1 or 2]"));
                             }
 
@@ -100,20 +105,19 @@ public class PetController {
                             System.out.print(Style.msgInfo(" // Type here [1-MALE / 2-FEMALE] >>> "));
                             response = sc.nextLine().trim();
 
-                            if (!response.matches("[0-9]+")) {
-                                System.out.println(Style.msgError("Invalid digit [1 or 2]"));
-                                continue;
-                            }
+                            try {
+                                int type = Integer.parseInt(response);
 
-                            int type = Integer.parseInt(response);
-
-                            if (type == 1) {
-                                petSex = PetSex.MALE;
-                                break;
-                            } else if (type == 2) {
-                                petSex = PetSex.FEMALE;
-                                break;
-                            } else {
+                                if (type == 1) {
+                                    petSex = PetSex.MALE;
+                                    break;
+                                } else if (type == 2) {
+                                    petSex = PetSex.FEMALE;
+                                    break;
+                                } else {
+                                    System.out.println(Style.msgError("Invalid digit [1 or 2]"));
+                                }
+                            } catch (NumberFormatException e) {
                                 System.out.println(Style.msgError("Invalid digit [1 or 2]"));
                             }
 
@@ -142,7 +146,7 @@ public class PetController {
                         // Street ---------------------------------------------------------------
                         do {
                             System.out.print(Style.msgInfo(" // Type here [ STREET ] >>> "));
-                            response = sc.nextLine();
+                            response = sc.nextLine().trim(); // Alterado para .trim()
 
                             if (response.isEmpty()) {
                                 System.out.println(Style.msgError("[STREET] Cannot be empty..."));
@@ -164,22 +168,28 @@ public class PetController {
                                 break;
                             }
 
-                            if (!response.matches("[0-9]+")) {
-                                System.out.println("\n" + Style.msgError("Invalid input, just numbers is accepted..."));
-                            } else {
+                            try {
                                 int number = Integer.parseInt(response);
+
+                                if (number <= 0) {
+                                    System.out.println("\n" + Style.msgError("The number must be positive."));
+                                    continue;
+                                }
+
                                 petAddress.setNumber(number);
                                 System.out.println("\n" + Style.msgOk(" NUMBER OK! "));
                                 break;
+
+                            } catch (NumberFormatException e) {
+                                System.out.println("\n" + Style.msgError("Invalid input. Please enter a whole number (integer)."));
                             }
                         } while (true);
-
                         break;
 
                     /* ------------------------ QUESTION 05 - AGE ------------------------ */
                     case 4:
                         do {
-                            System.out.print(Style.msgInfo(" // Type here >>> "));
+                            System.out.print(Style.msgInfo(" // Type here [ YEARS or <12 MONTHS ] >>> ")); // Mensagem ajustada para clareza
                             response = sc.nextLine().trim();
 
                             if (response.isEmpty()) {
@@ -188,32 +198,32 @@ public class PetController {
                                 break;
                             }
 
-                            if (!response.matches("[0-9]+")) {
-                                System.out.println(Style.msgError("Invalid input, just numbers are accepted..."));
-                                continue;
+                            try {
+                                int input = Integer.parseInt(response);
+
+                                if (input > 20) {
+                                    System.out.println(Style.msgError("Age cannot be more than 20 years!"));
+                                } else if (input >= 1) {
+                                    age = (double) input;
+                                    System.out.println(Style.msgOk("AGE OK! (" + input + " years)"));
+                                    break;
+                                } else if (input > 0 && input < 12) {
+                                    age = input / 12.0;
+                                    System.out.println(Style.msgOk("AGE OK! Converted from " + input + " months to years: " + String.format("%.2f", age)));
+                                    break;
+                                } else { // input <= 0
+                                    System.out.println(Style.msgError("Invalid age. Must be a positive number of years or months (1-11)."));
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(Style.msgError("Invalid input, just whole numbers are accepted."));
                             }
-
-                            int input = Integer.parseInt(response);
-
-                            if (input > 20) {
-                                // Lançar exceção dentro do loop de input para que seja capturada
-                                throw new IllegalArgumentException("Age cannot be more than 20 years!");
-                            } else if (input < 1) {
-                                // Convert months to years
-                                age = input / 12.0;
-                                System.out.println(Style.msgOk("AGE OK! Converted from months to years: " + String.format("%.2f", age)));
-                            } else {
-                                age = (double) input;
-                                System.out.println(Style.msgOk("AGE OK!"));
-                            }
-
                         } while (true);
                         break;
 
                     /* ------------------------ QUESTION 06 - WEIGHT ------------------------ */
                     case 5:
                         do {
-                            System.out.print(Style.msgInfo(" // Type here >>> "));
+                            System.out.print(Style.msgInfo(" // Type here [ ex: 15.5 or 3,2 ] >>> "));
                             response = sc.nextLine().trim();
 
                             if (response.isEmpty()) {
@@ -222,27 +232,29 @@ public class PetController {
                                 break;
                             }
 
-                            // A regex original estava incorreta no final, corrigida para permitir ponto ou vírgula.
-                            if (!response.matches("^[0-9]+([.,][0-9]+)?$")) {
-                                System.out.println("\n" + Style.msgError("Invalid input, just numbers is accepted..."));
-                                continue;
-                            }
-
                             String normalized = response.replace(",", ".");
 
-                            double w = Double.parseDouble(normalized);
+                            try {
+                                double w = Double.parseDouble(normalized);
 
-                            if (w < 0.5 || w > 60.0) {
-                                System.out.println(Style.msgError("Invalid weight. Must be between 0.5kg and 60kg."));
-                                continue;
+                                if (w < 0.5 || w > 60.0) {
+                                    System.out.println(Style.msgError("Invalid weight. Must be between 0.5kg and 60kg."));
+                                    continue;
+                                }
+                                weight = w;
+                                System.out.println(Style.msgOk("WEIGHT OK!"));
+                                break;
+
+                            } catch (NumberFormatException e) {
+                                System.out.println(Style.msgError("Invalid input. Please enter a valid number (e.g., 5, 5.5 or 5,5)."));
                             }
-                            weight = w;
-                            System.out.println(Style.msgOk("WEIGHT OK!"));
+
                         } while (true);
                         break;
 
                     /* ------------------------ QUESTION 07 - BREED ------------------------ */
                     case 6:
+                        // NÃO MUDOU, POIS É APENAS sc.nextLine()
                         System.out.print(Style.msgInfo(" // Type here >>> "));
                         response = sc.nextLine().trim();
 
@@ -261,10 +273,13 @@ public class PetController {
                 }
             }
 
+            // ... (Resto do método)
             petService.registerPet(name, petType, petSex, petAddress, age, weight, breed);
 
             System.out.println(Style.msgOk("\n*** Pet registration completed successfully! ***"));
 
+        } catch (InputMismatchException e) {
+            System.out.println(Style.msgError("\nRegistration failed: Input type mismatch. Ensure all inputs are correct."));
         } catch (IllegalArgumentException e) {
             System.out.println(Style.msgError("\nRegistration failed: " + e.getMessage()));
         } catch (IOException e) {
@@ -273,4 +288,5 @@ public class PetController {
             System.out.println(Style.msgError("\nAn unexpected error occurred during registration: " + e.getMessage()));
         }
     }
+
 }
