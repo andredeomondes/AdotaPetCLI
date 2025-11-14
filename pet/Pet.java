@@ -1,6 +1,5 @@
 package pet;
 
-
 import pet.enums.PetSex;
 import pet.enums.PetType;
 
@@ -91,5 +90,21 @@ public class Pet {
     @Override
     public int hashCode() {
         return Objects.hash(name, petType, petSex, address, age, weight, breed);
+    }
+
+    @Override
+    public String toString() {
+        String ageStr = age != null ? String.format("%.1f", age) : "N/I";
+        String weightStr = weight != null ? String.format("%.1f", weight) : "N/I";
+        String breedStr = (breed == null || breed.isEmpty()) ? "N/I" : breed;
+
+        return String.format("%s (%s/%s) | Raça: %s | Idade: %s anos | Peso: %s kg",
+                name,
+                petType,
+                petSex,
+                breedStr,
+                ageStr,
+                weightStr
+        );
     }
 }

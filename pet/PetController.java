@@ -6,13 +6,9 @@ import pet.enums.PetType;
 import utils.Style;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.InputMismatchException; // Adicionado para melhor tratamento de exceções
 import java.util.Scanner;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class PetController {
 
@@ -59,7 +55,6 @@ public class PetController {
                                 name = NA;
                                 break;
                             } else if (fields.length < 2) {
-                                // MANTIDO: Exige nome e sobrenome
                                 System.out.println(Style.msgError(" Type NAME AND LASTNAME (ex.: Michael Jackson)"));
                             } else if (!response.matches("^[A-Za-z]+(\\s[A-Za-z]+)*$")) {
                                 System.out.println(Style.msgError(" Use only letters (a–z, A–Z) and spaces."));
@@ -158,6 +153,7 @@ public class PetController {
                         } while (true);
 
                         // Number ---------------------------------------------------------------
+                        // **JÁ ESTAVA CORRETO**
                         do {
                             System.out.print(Style.msgInfo(" // Type here [ NUMBER ] >>> "));
                             response = sc.nextLine().trim();
@@ -171,6 +167,7 @@ public class PetController {
                             try {
                                 int number = Integer.parseInt(response);
 
+                                // Adiciona uma pequena validação
                                 if (number <= 0) {
                                     System.out.println("\n" + Style.msgError("The number must be positive."));
                                     continue;
@@ -207,7 +204,8 @@ public class PetController {
                                     age = (double) input;
                                     System.out.println(Style.msgOk("AGE OK! (" + input + " years)"));
                                     break;
-                                } else if (input > 0 && input < 12) {
+                                } else if (input > 0 && input < 12) { // De 1 a 11 meses
+                                    // CORRIGIDO: Conversão de meses para anos
                                     age = input / 12.0;
                                     System.out.println(Style.msgOk("AGE OK! Converted from " + input + " months to years: " + String.format("%.2f", age)));
                                     break;
@@ -232,6 +230,7 @@ public class PetController {
                                 break;
                             }
 
+                            // Normaliza e tenta analisar
                             String normalized = response.replace(",", ".");
 
                             try {
@@ -243,7 +242,7 @@ public class PetController {
                                 }
                                 weight = w;
                                 System.out.println(Style.msgOk("WEIGHT OK!"));
-                                break;
+                                break; // Sai do loop após sucesso
 
                             } catch (NumberFormatException e) {
                                 System.out.println(Style.msgError("Invalid input. Please enter a valid number (e.g., 5, 5.5 or 5,5)."));
@@ -288,5 +287,4 @@ public class PetController {
             System.out.println(Style.msgError("\nAn unexpected error occurred during registration: " + e.getMessage()));
         }
     }
-
 }

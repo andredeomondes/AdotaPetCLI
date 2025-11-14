@@ -52,4 +52,14 @@ public class PetAddress {
         return Objects.hash(street, number, city);
     }
 
+    @Override
+    public String toString() {
+        String numberStr = number != null ? String.valueOf(number) : "s/n";
+
+        return String.format("%s, %s - %s",
+                (street != null ? street : "N/I"),
+                numberStr,
+                (city != null ? city : "N/I")
+        );
+    }
 }

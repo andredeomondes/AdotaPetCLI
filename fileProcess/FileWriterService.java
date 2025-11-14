@@ -2,6 +2,7 @@ package fileProcess;
 
 import pet.Pet;
 import pet.PetAddress;
+import utils.LoadingAnimation;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,38 +11,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * -----------------------------------------------------------------------------
- * FILE WRITER SERVICE
- * -----------------------------------------------------------------------------
- * Responsible for exporting Pet data into structured text files following the
- * project's formatting rules. Ensures directory creation, filename generation,
- * data sanitization, and line-by-line file writing in a predictable format.
- *
- * Pattern Inspiration: "Single Responsibility" + "Utility Service Pattern"
- * -----------------------------------------------------------------------------
- */
 public class FileWriterService {
 
-    /** Constant used whenever user-provided data is missing or invalid */
     public static final String NA = "NOT INFORMED";
 
-    /** Directory path where all exported files will be stored */
     private final String directoryPath;
 
-    /**
-     * Constructor.
-     *
-     * @param directoryPath Directory where files will be saved.
-     */
     public FileWriterService(String directoryPath) {
         this.directoryPath = directoryPath;
         createDirectoryIfNotExists();
     }
 
-    /**
-     * Ensures the storage directory exists. Creates it if missing.
-     */
     private void createDirectoryIfNotExists() {
         File directory = new File(directoryPath);
         if (!directory.exists()) {
@@ -49,32 +29,17 @@ public class FileWriterService {
         }
     }
 
-    /**
-     * Builds a filename in the format:
-     *     YYYYMMDDTHHMM-NAME.TXT
-     *
-     * @param petName Raw pet name provided by user.
-     * @return Formatted filename string.
-     */
     private String buildFileName(String petName) {
         LocalDateTime now = LocalDateTime.now();
-
+        LoadingAnimation.dots(300);
         String datePart = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String timePart = now.format(DateTimeFormatter.ofPattern("HHmm"));
 
-        // Removes whitespace and forces uppercase.
         String formattedName = petName.replace(" ", "").toUpperCase();
 
         return datePart + "T" + timePart + "-" + formattedName + ".TXT";
     }
 
-    /**
-     * Saves all Pet data into a file, line by line.
-     * Questions are never included — only responses.
-     *
-     * @param pet The Pet object containing all collected information.
-     * @throws IOException If the file cannot be created or written.
-     */
     public void savePet(Pet pet) throws IOException {
 
         // --- File preparation -------------------------------------------------------
@@ -111,19 +76,12 @@ public class FileWriterService {
 
             if (pet.getAge() == null) {
                 ageLine = NA;
-            } else if (pet.getAge() < 1) {
-                // Age in months if less than 1 year
-                int months = (int) Math.round(pet.getAge() * 12);
-                ageLine = months + " " + (months == 1 ? "month" : "months");
             } else {
-                // Age in years
-                int years = (int) Math.floor(pet.getAge());
-                ageLine = years + " " + (years == 1 ? "year" : "years");
+                ageLine = String.format("%.1f year's", pet.getAge());
             }
 
             writer.write(ageLine);
             writer.newLine();
-
             // 6. WEIGHT ---------------------------------------------------------------
             String weightLine;
             if (pet.getWeight() == null) {
@@ -144,6 +102,8 @@ public class FileWriterService {
 
             writer.write(breedLine);
             writer.newLine();
+            LoadingAnimation.dots(300);
+
         }
     }
 }

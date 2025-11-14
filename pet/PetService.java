@@ -3,7 +3,7 @@ package pet;
 import fileProcess.FileWriterService;
 import pet.enums.PetSex;
 import pet.enums.PetType;
-import utils.Style; // Importe Style se for usá-lo para formatar exceções
+import utils.Style;
 
 import java.io.IOException;
 
