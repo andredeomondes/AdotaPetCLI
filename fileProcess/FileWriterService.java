@@ -121,6 +121,9 @@ public class FileWriterService {
                 ageLine = years + " " + (years == 1 ? "year" : "years");
             }
 
+            writer.write(ageLine);
+            writer.newLine();
+
             // 6. WEIGHT ---------------------------------------------------------------
             String weightLine;
             if (pet.getWeight() == null) {
